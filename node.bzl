@@ -7,10 +7,10 @@ def _impl(repository_ctx):
   # consumers can just depend on @base//image ?
   repository_ctx.file("BUILD", """
 package(default_visibility = ["//visibility:public"])
-
 load(
   "@io_bazel_rules_docker//docker:docker.bzl", "docker_build"
 )
+
 
 docker_build(
    name = "image",
@@ -23,6 +23,11 @@ docker_build(
    data_path = ".",
    files = glob(["node_modules/**/*"]),
    workdir = "/app",
+)
+
+filegroup(
+  name = "node_modules",
+  srcs = glob(["node_modules/**/*"]),
 )
 """)
 
@@ -45,3 +50,28 @@ _node_image = repository_rule(
 def node_image(**kwargs):
   """Build a Node.js base image."""
   _node_image(**kwargs)
+
+
+def node_binary_impl(ctx):
+  ctx.file_action(
+    output=ctx.outputs.executable,
+    content="""#!/bin/bash
+    set -ex
+    export NODE_PATH=./%s/node_modules
+    node %s
+    """ % (ctx.attr.node_modules.label.workspace_root, ctx.file.entrypoint.short_path)
+  )
+  return struct(runfiles = ctx.runfiles(files =[
+    ctx.file.entrypoint,
+  ] + ctx.files.srcs + ctx.files.node_modules),
+  )
+
+node_binary = rule(
+  implementation = node_binary_impl,
+  attrs = {
+    "srcs": attr.label_list(allow_files=True),
+    "node_modules": attr.label(allow_files=True),
+    "entrypoint": attr.label(allow_files=True, single_file=True),
+  },
+  executable=True,
+)

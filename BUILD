@@ -6,6 +6,11 @@ load(
   "docker_push",
 )
 
+load(
+  "//:node.bzl",
+  "node_binary"
+)
+
 docker_build(
    name = "hello",
    base = "@blah//:image.tar",
@@ -23,4 +28,11 @@ docker_push(
   image = ":hello",
   registry = "gcr.io",
   repository = "convoy-adapter/nodejs/hello-express"
+)
+
+node_binary(
+  name = "hello_node",
+  srcs = [":hello_express.js"],
+  entrypoint=":hello_express.js",
+  node_modules = "@blah//:node_modules"
 )
