@@ -21,7 +21,7 @@ docker_build(
    directory = "/app",
    # TODO(mattmoor): https://github.com/bazelbuild/bazel/issues/2176
    data_path = ".",
-   files = glob(["node_modules/**/*"]),
+   files = glob(["node_modules/**/*"], exclude=["**/test/**/*"]),
    workdir = "/app",
 )
 """)
