@@ -2,8 +2,8 @@ workspace(name = "rules_nodejs")
 
 git_repository(
     name = "io_bazel_rules_docker",
-    remote = "https://github.com/bazelbuild/rules_docker.git",
-    commit = "df9d21334be0d45b6995f5f46024a3d2ea22eca9",
+    remote = "https://github.com/mattmoor/rules_docker.git",
+    commit = "1ff192625cc1d039a93e922861ec036091e4ceb5",
 )
 
 load(

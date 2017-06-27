@@ -14,7 +14,7 @@ load(
 
 docker_build(
    name = "image",
-   base = "@node_base//image:image.tar",
+   base = "@node_base//image",
 
    # entrypoint = ["node"],
 
