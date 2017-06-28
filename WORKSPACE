@@ -3,7 +3,7 @@ workspace(name = "rules_nodejs")
 git_repository(
     name = "io_bazel_rules_docker",
     remote = "https://github.com/mattmoor/rules_docker.git",
-    commit = "a5f57a18575c8f8f60fa9c738f730a16cfdecbd2",
+    commit = "4cd788c673b53b0ba08f00a61c91fbb818e5129e",
 )
 
 load(
